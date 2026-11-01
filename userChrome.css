@@ -1,0 +1,445 @@
+/* Firefox 159 desktop: flatter controls and tabs.
+   Change these values to adjust rounding and interaction contrast. */
+:root {
+  --flat-tab-radius: 4px;
+  --flat-control-radius: 4px;
+  --flat-panel-radius: 6px;
+  --flat-hover-background: color-mix(in srgb, currentColor 14%, transparent);
+  --flat-active-background: color-mix(in srgb, currentColor 27%, transparent);
+  --flat-hover-border: color-mix(in srgb, currentColor 18%, transparent);
+  --flat-active-border: color-mix(in srgb, currentColor 30%, transparent);
+  --flat-divider-color: color-mix(in srgb, currentColor 15%, transparent);
+
+  --tab-border-radius: var(--flat-tab-radius) !important;
+  --toolbarbutton-border-radius: var(--flat-control-radius) !important;
+  --border-radius-small: var(--flat-control-radius) !important;
+  --border-radius-medium: var(--flat-control-radius) !important;
+  --border-radius-large: var(--flat-panel-radius) !important;
+  --panel-menuitem-border-radius: var(--flat-control-radius) !important;
+  --menuitem-border-radius: var(--flat-control-radius) !important;
+}
+
+/* Interface text uses Inter, with a system fallback. */
+:root,
+.tab-label,
+.toolbarbutton-text,
+.subviewbutton,
+panelview,
+menu,
+menuitem,
+.bookmark-item,
+#urlbar-input,
+.urlbarView-row,
+#searchbar input {
+  font-family: Inter, sans-serif !important;
+}
+
+/* Use the installed monospace family for the address field only. */
+#urlbar-input {
+  font-family: "Google Sans Code Monospace", "Google Sans Code", monospace !important;
+  font-variation-settings: "MONO" 1 !important;
+}
+
+/* Tab hover preview: the thumbnail reaches the panel edges while the text
+   keeps a small inset for readability. */
+#tab-preview-panel {
+  --panel-padding: 0 !important;
+  --panel-border-radius: var(--flat-panel-radius) !important;
+}
+
+#tab-preview-panel .tab-preview-content-main {
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+#tab-preview-panel .tab-preview-text-container {
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  min-width: 0 !important;
+}
+
+#tab-preview-panel .tab-preview-thumbnail-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+#tab-preview-panel .tab-preview-thumbnail-container > canvas {
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+#tab-preview-panel .tab-preview-uri {
+  font-family: "Google Sans Code Monospace", "Google Sans Code", monospace !important;
+  font-variation-settings: "MONO" 1 !important;
+}
+
+/* Match the tab hover timing and keep Firefox's reduced-motion behavior. */
+@media (prefers-reduced-motion: no-preference) {
+  #tab-preview-panel:not([animate="false"]) {
+    transition-duration: 140ms !important;
+    transition-timing-function: ease-out !important;
+  }
+
+  #tab-preview-panel[animate="open"] {
+    transition-duration: 70ms !important;
+  }
+
+  #tab-preview-panel .tab-preview-thumbnail-container > canvas {
+    animation-duration: 70ms !important;
+  }
+}
+
+/* Restore Firefox's normal address-bar radius without changing the smaller
+   rounding used by controls elsewhere in the theme. */
+#urlbar {
+  --urlbar-border-radius: 8px !important;
+  --urlbarview-border-radius: calc(var(--urlbar-border-radius) + 2px) !important;
+  --urlbarview-row-border-radius: var(--flat-control-radius) !important;
+}
+
+@media -moz-pref("browser.nova.enabled") {
+  #urlbar {
+    --urlbar-border-radius: var(--border-radius-xlarge, 24px) !important;
+    --urlbarview-border-radius: var(--urlbar-border-radius) !important;
+  }
+}
+
+#urlbar .urlbarView-row,
+#urlbar .urlbarView-row-inner {
+  border-radius: var(--flat-control-radius) !important;
+}
+
+/* Match the search-engine button to the restored address-bar rounding. */
+#urlbar .searchmode-switcher {
+  --button-border-radius: var(--urlbar-border-radius) !important;
+}
+
+/* Keep the address/search popup shadow neutral instead of Nova's purple glow. */
+@media not (forced-colors) {
+  .urlbar,
+  #searchbar {
+    --chrome-box-shadow: rgba(0, 0, 0, 0.24) !important;
+  }
+}
+
+/* Common controls and popup surfaces. Do not remove focus outlines. */
+#searchbar {
+  border-radius: var(--flat-control-radius) !important;
+}
+
+menupopup,
+panel {
+  --panel-border-radius: var(--flat-panel-radius) !important;
+  --panel-menuitem-border-radius: var(--flat-control-radius) !important;
+  --menuitem-border-radius: var(--flat-control-radius) !important;
+}
+
+/* Application menu items, including the History hover highlight. */
+panelview .subviewbutton,
+panelview .toolbarbutton-1,
+.widget-overflow-list .toolbarbutton-1 {
+  border-radius: var(--flat-control-radius) !important;
+}
+
+/* Shared feedback for toolbar/bookmark buttons, sidebar launcher buttons and
+   menu rows. The button tokens also reach Firefox's shadow-DOM controls. */
+@media not (forced-colors) {
+  :root {
+    --tab-background-color-hover: var(--flat-hover-background) !important;
+    --toolbarbutton-background-color-hover: var(--flat-hover-background) !important;
+    --toolbarbutton-background-color-active: var(--flat-active-background) !important;
+    --toolbarbutton-outline-color-hover: var(--flat-hover-border) !important;
+    --toolbarbutton-outline-color-active: var(--flat-active-border) !important;
+    --button-background-color-ghost-hover: var(--flat-hover-background) !important;
+    --button-background-color-ghost-active: var(--flat-active-background) !important;
+    --button-background-color-menu-hover: var(--flat-hover-background) !important;
+    --button-background-color-menu-active: var(--flat-active-background) !important;
+    --button-background-color-toolbar-hover: var(--flat-hover-background) !important;
+    --button-background-color-toolbar-active: var(--flat-active-background) !important;
+  }
+
+  sidebar-main {
+    --button-background-color-hover: var(--flat-hover-background) !important;
+    --button-background-color-active: var(--flat-active-background) !important;
+  }
+
+  /* Extension rows paint their two buttons separately using the shared tokens. */
+  :is(panelview, .widget-overflow-list)
+    .subviewbutton:not([disabled], .unified-extensions-item-action-button, .unified-extensions-item-menu-button):hover,
+  menupopup > :is(menu, menuitem)[_moz-menuactive]:not([disabled]) {
+    background-color: var(--flat-hover-background) !important;
+    color: inherit !important;
+  }
+
+  :is(panelview, .widget-overflow-list)
+    .subviewbutton:not([disabled], .unified-extensions-item-action-button, .unified-extensions-item-menu-button):is(:hover:active, [open="true"]),
+  menupopup > :is(menu, menuitem)[_moz-menuactive]:not([disabled]):is(:active, [open="true"]) {
+    background-color: var(--flat-active-background) !important;
+    color: inherit !important;
+  }
+
+  /* Dim only the New Tab action's contents, keeping its hit area and focus
+     indication intact in either tab orientation. */
+  :is(#tabs-newtab-button, #vertical-tabs-newtab-button, #new-tab-button):not([disabled])
+    > :is(.toolbarbutton-icon, .toolbarbutton-text) {
+    opacity: 0.72 !important;
+    font-weight: 400 !important;
+  }
+
+  :is(#tabs-newtab-button, #vertical-tabs-newtab-button, #new-tab-button):not([disabled]):is(:hover, :focus-visible, :active)
+    > :is(.toolbarbutton-icon, .toolbarbutton-text) {
+    opacity: 1 !important;
+  }
+}
+
+/* Keep Firefox's default vertical-tab height, with a smaller gap. */
+:root:has(#tabbrowser-tabs[orient="vertical"]) {
+  --tab-margin-block-vertical: 1px !important;
+  --tab-margin-block: 1px !important;
+}
+
+/* Remove the extra section gap below pinned tabs; retain normal tab padding. */
+#tabbrowser-tabs[orient="vertical"] > #vertical-pinned-tabs-splitter {
+  display: none !important;
+}
+
+#tabbrowser-tabs[orient="vertical"] > #pinned-tabs-container:not(:empty) {
+  margin-block-end: calc(-1 * var(--space-small)) !important;
+}
+
+/* The floating sidebar must paint the window's theme image itself because it
+   can cover page content. Keep that image aligned to the full window. */
+@media not (forced-colors) {
+  @media -moz-pref("sidebar.visibility", "expand-on-hover") {
+    #sidebar-container {
+      color: var(--toolbox-text-color) !important;
+      background-color: var(--lwt-accent-color, var(--toolbox-background-color)) !important;
+      background-image: var(--toolbox-background-image, none) !important;
+      background-size: 100vw 100vh !important;
+      background-repeat: no-repeat !important;
+      background-position: left top !important;
+    }
+
+    #sidebar-container[sidebar-positionend]:-moz-locale-dir(ltr),
+    #sidebar-container:not([sidebar-positionend]):-moz-locale-dir(rtl) {
+      background-position-x: right !important;
+    }
+  }
+}
+
+/* User styles reach shadow-tree nodes directly, but cannot use ::part() to
+   select them from a host (Mozilla bug 1575507). Pass settings through custom
+   properties so other scrollboxes retain their native appearance. */
+:is(#tabbrowser-arrowscrollbox, #pinned-tabs-container)[orient="vertical"] {
+  --flat-tab-scrollbar-width: none;
+  --flat-tab-scrollbar-color: transparent transparent;
+}
+
+scrollbox[part="scrollbox"] {
+  scrollbar-width: var(--flat-tab-scrollbar-width, revert) !important;
+  scrollbar-color: var(--flat-tab-scrollbar-color, revert) !important;
+}
+
+@media not (forced-colors) {
+  :is(#tabbrowser-arrowscrollbox, #pinned-tabs-container)[orient="vertical"] {
+    --flat-tab-overflow-start-opacity: 0;
+    --flat-tab-overflow-end-opacity: 0;
+    /* Matching, gradual shadows at both scroll edges, with feathered ends. */
+    --flat-tab-overflow-start-size: 20px;
+    --flat-tab-overflow-end-size: 20px;
+    --flat-tab-overflow-start-margin: 0 -20px;
+    --flat-tab-overflow-end-margin: -20px 0;
+    --flat-tab-overflow-start-image: linear-gradient(to top, transparent, color-mix(in srgb, var(--toolbox-background-color) 45%, transparent));
+    --flat-tab-overflow-end-image: var(--flat-tab-overflow-start-image);
+    --flat-tab-overflow-start-mask: linear-gradient(to right, transparent, black 12px, black calc(100% - 12px), transparent);
+    --flat-tab-overflow-end-mask: var(--flat-tab-overflow-start-mask);
+  }
+
+  :is(#tabbrowser-arrowscrollbox, #pinned-tabs-container)[orient="vertical"][overflowing]:not([scrolledtostart]) {
+    --flat-tab-overflow-start-opacity: 1;
+  }
+
+  :is(#tabbrowser-arrowscrollbox, #pinned-tabs-container)[orient="vertical"][overflowing]:not([scrolledtoend]) {
+    --flat-tab-overflow-end-opacity: 1;
+  }
+
+  spacer[part="overflow-start-indicator"] {
+    height: var(--flat-tab-overflow-start-size, revert) !important;
+    margin-block: var(--flat-tab-overflow-start-margin, revert) !important;
+    background-image: var(--flat-tab-overflow-start-image, revert) !important;
+    mask-image: var(--flat-tab-overflow-start-mask, revert) !important;
+    opacity: var(--flat-tab-overflow-start-opacity, revert) !important;
+  }
+
+  spacer[part="overflow-end-indicator"] {
+    height: var(--flat-tab-overflow-end-size, revert) !important;
+    margin-block: var(--flat-tab-overflow-end-margin, revert) !important;
+    background-image: var(--flat-tab-overflow-end-image, revert) !important;
+    mask-image: var(--flat-tab-overflow-end-mask, revert) !important;
+    opacity: var(--flat-tab-overflow-end-opacity, revert) !important;
+  }
+}
+
+/* Flat tab surfaces in both horizontal and vertical layouts. Keep native
+   multi-selection, drag indicators and forced-colors behavior. */
+@media not (forced-colors) {
+  /* Ordinary inactive tabs are transparent until hovered or pressed. */
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([visuallyselected], [multiselected], [dragtarget]) > .tab-stack > .tab-background:not([selected], [multiselected]) {
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    outline-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Give inactive pinned tabs a visible tab-shaped surface around the icon.
+     The inset border follows the tab radius without changing its size. */
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab[pinned]:not([visuallyselected], [multiselected], [dragtarget], :hover, :active) > .tab-stack > .tab-background:not([selected], [multiselected]) {
+    background-color: color-mix(in srgb, currentColor 6%, transparent) !important;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 22%, transparent) !important;
+  }
+
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([visuallyselected], [multiselected], [dragtarget]):hover > .tab-stack > .tab-background:not([selected], [multiselected]) {
+    background-color: var(--flat-hover-background) !important;
+    border-color: var(--flat-hover-border) !important;
+  }
+
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([visuallyselected], [multiselected], [dragtarget]):active > .tab-stack > .tab-background:not([selected], [multiselected]) {
+    background-color: var(--flat-active-background) !important;
+    border-color: var(--flat-active-border) !important;
+  }
+
+  /* Draw separators only between adjacent inactive tabs. */
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([visuallyselected], [multiselected], [dragtarget], [hidden]):has(+ .tabbrowser-tab:not([visuallyselected], [multiselected], [hidden])) {
+    position: relative;
+  }
+
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([visuallyselected], [multiselected], [dragtarget], [hidden]):has(+ .tabbrowser-tab:not([visuallyselected], [multiselected], [hidden]))::after {
+    content: "";
+    position: absolute;
+    background-color: var(--flat-divider-color);
+    pointer-events: none;
+  }
+
+  #tabbrowser-tabs[orient="vertical"]:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([visuallyselected], [multiselected], [dragtarget], [hidden]):has(+ .tabbrowser-tab:not([visuallyselected], [multiselected], [hidden]))::after {
+    /* Match the selected background's outer inline edges. Its normal outline
+       is inset, so it does not add anything to these margins. */
+    inset-inline: var(--tab-margin-inline-inner);
+    /* Center the 1px line in the gap between backgrounds. Firefox's vertical
+       rows have unequal start/end padding (3px/2px); the equal background
+       margins cancel out. This also works for the taller first tab row. */
+    inset-block-end: calc((var(--tab-padding-block-end, 0px) - var(--tab-padding-block-start, 0px) - 1px) / 2);
+    height: 1px;
+  }
+
+  #tabbrowser-tabs[orient="horizontal"]:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([visuallyselected], [multiselected], [dragtarget], [hidden]):has(+ .tabbrowser-tab:not([visuallyselected], [multiselected], [hidden]))::after {
+    /* Match the selected background's top/bottom edges and center the line
+       on the shared row boundary, between the equal inline paddings. */
+    inset-block: var(--tab-margin-block);
+    inset-inline-end: -0.5px;
+    width: 1px;
+  }
+
+  /* The selected tab remains distinct and has no gradient border. */
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([multiselected]) > .tab-stack > .tab-background[selected] {
+    background-image: none !important;
+    background-color: var(--tab-background-color-selected) !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([multiselected]):hover > .tab-stack > .tab-background[selected] {
+    background-color: color-mix(in srgb, var(--tab-background-color-selected) 94%, currentColor 6%) !important;
+  }
+
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:not([multiselected]):active > .tab-stack > .tab-background[selected] {
+    background-color: color-mix(in srgb, var(--tab-background-color-selected) 88%, currentColor 12%) !important;
+  }
+}
+
+/* Transitions change only color and do not move tabs or their content. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Sidebar moz-buttons live in nested shadow trees. Inherit their timing
+     from sidebar-main instead of relying on selectors across those trees. */
+  sidebar-main {
+    --flat-button-transition: background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out;
+    --flat-button-hover-duration: 70ms;
+  }
+
+  .button-background {
+    transition: var(--flat-button-transition, revert) !important;
+  }
+
+  button:hover > .button-background {
+    transition-duration: var(--flat-button-hover-duration, revert) !important;
+  }
+
+  :is(panelview, .widget-overflow-list) .subviewbutton,
+  toolbarbutton.bookmark-item,
+  menupopup > :is(menu, menuitem),
+  #sidebar-switcher-target,
+  #sidebar-close,
+  toolbar .toolbarbutton-1 > :is(.toolbarbutton-icon, .toolbarbutton-text, .toolbarbutton-badge-stack),
+  :is(#tabs-newtab-button, #vertical-tabs-newtab-button, #new-tab-button)
+    > :is(.toolbarbutton-icon, .toolbarbutton-text) {
+    transition: background-color 140ms ease-out, border-color 140ms ease-out, color 140ms ease-out, opacity 140ms ease-out !important;
+  }
+
+  :is(panelview, .widget-overflow-list) .subviewbutton:hover,
+  toolbarbutton.bookmark-item:hover,
+  menupopup > :is(menu, menuitem)[_moz-menuactive],
+  #sidebar-switcher-target:hover,
+  #sidebar-close:hover,
+  toolbar .toolbarbutton-1:hover > :is(.toolbarbutton-icon, .toolbarbutton-text, .toolbarbutton-badge-stack),
+  :is(#tabs-newtab-button, #vertical-tabs-newtab-button, #new-tab-button):is(:hover, :focus-visible)
+    > :is(.toolbarbutton-icon, .toolbarbutton-text) {
+    transition-duration: 70ms !important;
+  }
+
+  /* Smooth theme colour changes, including Adaptive Tab Bar Colour updates.
+     Include the current sidebar and split address-bar popup backgrounds. */
+  body,
+  findbar,
+  #navigator-toolbox,
+  #TabsToolbar,
+  #nav-bar,
+  #PersonalToolbar,
+  #sidebar-box,
+  #sidebar-container,
+  .urlbar-background,
+  .urlbarView-background {
+    transition:
+      background-color 0.5s cubic-bezier(0, 0, 0, 1),
+      border-color 0.5s cubic-bezier(0, 0, 0, 1),
+      outline 0.5s cubic-bezier(0, 0, 0, 1) !important;
+  }
+
+  /* Keep tab selection and hover feedback at the original, faster timing. */
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group]) .tab-background {
+    transition: background-color 140ms ease-out, border-color 140ms ease-out !important;
+  }
+
+  #tabbrowser-tabs:not([movingtab]):not([movingtab-group])
+    .tabbrowser-tab:hover > .tab-stack > .tab-background {
+    transition-duration: 70ms, 70ms !important;
+  }
+}
+
+/* Retain a visible keyboard focus indication on the selected tab. */
+#tabbrowser-tabs[tablist-has-focus]
+  .tabbrowser-tab.tablist-keyboard-focus > .tab-stack > .tab-background {
+  outline: var(--focus-outline) !important;
+  outline-offset: var(--focus-outline-inset) !important;
+}

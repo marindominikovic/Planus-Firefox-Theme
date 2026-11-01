@@ -1,0 +1,448 @@
+/* Built-in Firefox Home and New Tab pages only. */
+@-moz-document url("about:newtab"), url("about:home") {
+  :root {
+    --flat-shortcut-radius: 4px;
+    --flat-shortcut-gap: 14px;
+    --flat-shortcut-width: 104px;
+    --flat-shortcut-icon-size: 40px;
+    --flat-shortcut-icon-radius: 4px;
+    --flat-shortcut-icon-padding: 25px;
+    --flat-shortcut-card-height: calc(var(--flat-shortcut-icon-size) + 2 * var(--flat-shortcut-icon-padding) + 36px);
+    --flat-shortcut-background: color-mix(in srgb, currentColor 7%, transparent);
+    --flat-menu-radius: 4px;
+    --flat-menu-item-radius: 4px;
+  }
+
+  /* Tighten the space around the favicon as the page narrows. Keep the
+     favicon at 40px and retain the two-line label area. */
+  @media (max-width: 900px) {
+    :root {
+      --flat-shortcut-width: 88px;
+      --flat-shortcut-icon-padding: 12px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    :root {
+      --flat-shortcut-width: 76px;
+      --flat-shortcut-icon-padding: 8px;
+    }
+  }
+
+  /* Shortcut and other New Tab menus use page styles, separate from the
+     browser's own popup styles. Keep keyboard focus and menu positioning. */
+  .context-menu {
+    border-radius: var(--flat-menu-radius) !important;
+  }
+
+  .context-menu .context-menu-item > button,
+  .context-menu .context-menu-item > a,
+  .top-site-outer .context-menu-button {
+    border-radius: var(--flat-menu-item-radius) !important;
+  }
+
+  /* One quiet surface around both the icon and its label. */
+  .top-sites-list {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, var(--flat-shortcut-width)) !important;
+    justify-content: center !important;
+    gap: var(--flat-shortcut-gap) !important;
+    width: 100% !important;
+    max-width: calc(8 * var(--flat-shortcut-width) + 7 * var(--flat-shortcut-gap)) !important;
+    margin-inline: auto !important;
+  }
+
+  .top-sites-list-wrapper {
+    width: 100% !important;
+  }
+
+  .top-site-outer {
+    background-color: var(--flat-shortcut-background) !important;
+    border-radius: var(--flat-shortcut-radius) !important;
+    margin-block-end: 0 !important;
+    width: var(--flat-shortcut-width) !important;
+  }
+
+  .top-site-outer:is(:hover, :focus-within, .active) {
+    background-color: color-mix(in srgb, currentColor 14%, transparent) !important;
+  }
+
+  /* A stronger surface and a subtle inset edge while the shortcut is pressed.
+     Keep dragging and the shortcut menu's active state separate. */
+  .top-sites-list:not(.dnd-active) .top-site-outer:has(.top-site-button:active) {
+    background-color: color-mix(in srgb, currentColor 22%, transparent) !important;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 20%, transparent) !important;
+  }
+
+  /* Move keyboard focus from the icon to the entire card. Firefox's native
+     focus styling is retained in Windows forced-colors mode. */
+  @media not (forced-colors) {
+    .top-site-outer .top-site-button:focus .tile {
+      outline: none !important;
+    }
+
+    .top-site-outer:has(.top-site-button:focus-visible) {
+      outline: 2px solid color-mix(in srgb, currentColor 65%, transparent) !important;
+      outline-offset: 2px !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .top-site-outer {
+      transition: background-color 80ms ease-out, box-shadow 80ms ease-out;
+    }
+  }
+
+  .top-site-outer .top-site-inner > a {
+    padding: 9px 10px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* The newer layout otherwise reserves a 75px row for the icon. */
+  .nova-enabled .top-site-outer .top-site-button {
+    grid-template-rows: var(--flat-shortcut-icon-size) auto !important;
+  }
+
+  /* Keep the favicon, not the old separate square behind it. */
+  .top-site-outer .tile {
+    background: transparent !important;
+    box-shadow: none !important;
+    width: var(--flat-shortcut-icon-size) !important;
+    height: var(--flat-shortcut-icon-size) !important;
+    border-color: transparent !important;
+  }
+
+  .top-site-outer .tile .icon-wrapper {
+    background-color: transparent !important;
+    width: var(--flat-shortcut-icon-size) !important;
+    height: var(--flat-shortcut-icon-size) !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Contain the whole favicon, including icons that are not square. */
+  .top-site-outer .tile .top-site-icon {
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border-radius: var(--flat-shortcut-icon-radius) !important;
+  }
+
+  .top-site-outer .tile .default-icon {
+    width: var(--flat-shortcut-icon-size) !important;
+    height: var(--flat-shortcut-icon-size) !important;
+    background-size: contain !important;
+  }
+
+  .top-site-outer .title {
+    padding-block-start: 5px !important;
+    font-family: Inter, sans-serif !important;
+    font-size: var(--font-size-small, 12px) !important;
+    line-height: 16px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .top-site-outer .title .title-label {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding-inline: 0 !important;
+    min-height: 0 !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  /* Taller shortcut cards with a centered icon and a two-line title. */
+  .top-sites-list {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--flat-shortcut-width)), 1fr)) !important;
+    gap: var(--flat-shortcut-gap) !important;
+    max-width: calc(8 * var(--flat-shortcut-width) + 7 * var(--flat-shortcut-gap)) !important;
+    align-items: stretch !important;
+  }
+
+  .top-sites-list .top-site-outer {
+    width: 100% !important;
+    /* Match Firefox's Recent activity cards. */
+    border-radius: var(--border-radius-medium, 12px) !important;
+    background-color: var(--newtab-background-color-secondary) !important;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 8%, transparent), 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .top-sites-list .top-site-outer:is(:hover, :focus-within, .active) {
+    background-color: color-mix(in srgb, var(--newtab-background-color-secondary) 92%, currentColor 8%) !important;
+  }
+
+  .top-sites-list .top-site-outer .top-site-inner > a.top-site-button {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) 36px !important;
+    align-items: stretch !important;
+    height: var(--flat-shortcut-card-height) !important;
+    padding: 0 !important;
+  }
+
+  .top-sites-list .top-site-outer .tile {
+    width: 100% !important;
+    height: var(--flat-shortcut-icon-size) !important;
+    margin: 0 !important;
+    align-self: center !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+  }
+
+  .top-sites-list .top-site-outer .title {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: color-mix(in srgb, currentColor 7%, transparent) !important;
+    border-radius: 0 0 var(--border-radius-medium, 12px) var(--border-radius-medium, 12px) !important;
+  }
+
+  /* Center all the main sections together in the original layout. */
+  .outer-wrapper.only-search {
+    display: flex !important;
+    padding-block: var(--space-xxlarge) !important;
+  }
+
+  .outer-wrapper main.newtab-main {
+    margin-block: auto !important;
+  }
+
+  /* Center the complete newer layout, including its separate content band.
+     Auto margins become zero when the page is taller than the viewport. */
+  .nova-outer-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    padding-block-end: var(--space-xlarge);
+  }
+
+  .nova-outer-wrapper > .container.nova-enabled {
+    flex: 0 0 auto !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    margin-block: auto !important;
+  }
+
+  /* Without a separate search row, Firefox's reserved first track adds empty
+     space above the visible content. Keep sidebars in their original columns. */
+  .nova-outer-wrapper > .container.nova-enabled:not(:has(> .search-wrapper)) {
+    grid-template-rows: auto auto !important;
+  }
+
+  .nova-outer-wrapper > .container.nova-enabled:not(:has(> .search-wrapper)) .content {
+    grid-row: 1 / span 2 !important;
+  }
+
+  .top-sites-list .top-site-outer .top-site-button > .tile {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  .top-sites-list .top-site-outer .top-site-button > .title {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    padding: 2px 8px !important;
+  }
+
+  /* Firefox takes a picture of this fixed-position clone for dragging. A
+     percentage width would otherwise expand it to the width of the window. */
+  .top-sites-list .top-site-outer.drag-ghost {
+    width: var(--flat-shortcut-width) !important;
+    height: auto !important;
+    transform: none !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  .top-sites-list .top-site-outer.drag-ghost .top-site-inner {
+    border-radius: inherit !important;
+    overflow: hidden !important;
+  }
+
+  .pinned-drag-overlay .pinned-drop-box::before {
+    border-radius: var(--flat-shortcut-radius) !important;
+    background: color-mix(in srgb, var(--border-color-selected) 8%, transparent) !important;
+    outline: 1px dashed color-mix(in srgb, var(--border-color-selected) 55%, transparent) !important;
+  }
+}
+
+/* PDF.js viewer controls. Identify the viewer by its structure so this also
+   applies to PDF URLs without a .pdf suffix. Keep styling out of PDF pages. */
+@media screen {
+  :root:has(#outerContainer #viewerContainer > #viewer.pdfViewer) {
+    --button-border-radius: 4px !important;
+    --panel-border-radius: 6px !important;
+    --panel-menuitem-border-radius: 4px !important;
+    --border-radius-small: 4px !important;
+    --border-radius-medium: 4px !important;
+    --border-radius-large: 6px !important;
+    --sidebar-border-radius: 6px !important;
+
+    :is(#toolbarContainer, #secondaryToolbar, #findbar, #sidebarContainer,
+        .editorParamsToolbar, .menuContainer, dialog, .toolbarButton,
+        .toolbarField, .dropdownToolbarButton select, .primaryButton,
+        .secondaryButton) {
+      font-family: Inter, sans-serif !important;
+    }
+
+    :is(.toolbarButton, .toolbarField, .dropdownToolbarButton,
+        .dropdownToolbarButton select, .primaryButton, .secondaryButton) {
+      border-radius: 4px !important;
+    }
+
+    :is(#secondaryToolbar, #findbar, .menuContainer, .menu, dialog) {
+      border-radius: 6px !important;
+    }
+
+    /* Fit the zoom selector inside both compact and normal toolbars. */
+    #scaleSelectContainer {
+      height: calc(var(--toolbar-height) - 2 * var(--toolbar-vertical-padding)) !important;
+      min-height: 0 !important;
+      align-self: center !important;
+    }
+
+    #scaleSelect {
+      box-sizing: border-box !important;
+      height: 100% !important;
+      min-height: 0 !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      padding-block: 0 !important;
+      padding-inline: 8px 28px !important;
+      font-size: 12px !important;
+      background: transparent !important;
+    }
+
+    #scaleSelectContainer::after {
+      inset-inline-end: 8px !important;
+    }
+
+    @media not (forced-colors) {
+      --planus-pdf-accent: light-dark(#55555d, #b8b8c0);
+      --planus-pdf-accent-hover: light-dark(#3f3f46, #d2d2d8);
+      --planus-pdf-accent-text: light-dark(#ffffff, #202024);
+      --color-accent-primary: var(--planus-pdf-accent) !important;
+      --color-accent-primary-hover: var(--planus-pdf-accent-hover) !important;
+      --color-accent-primary-active: light-dark(#303036, #e8e8ec) !important;
+      --focus-outline-color: var(--planus-pdf-accent) !important;
+      --focus-ring-color: var(--planus-pdf-accent) !important;
+      --border-color-interactive: light-dark(#9999a1, #707078) !important;
+      --border-color-interactive-hover: var(--planus-pdf-accent) !important;
+      --border-color-interactive-active: var(--planus-pdf-accent-hover) !important;
+      --button-border-color: var(--border-color-interactive) !important;
+      --button-border-color-hover: var(--border-color-interactive-hover) !important;
+      --button-border-color-active: var(--border-color-interactive-active) !important;
+      --button-background-color-primary: var(--planus-pdf-accent) !important;
+      --button-background-color-primary-hover: var(--planus-pdf-accent-hover) !important;
+      --button-background-color-primary-active: light-dark(#303036, #e8e8ec) !important;
+      --button-text-color-primary: var(--planus-pdf-accent-text) !important;
+      --button-text-color-primary-hover: var(--planus-pdf-accent-text) !important;
+      --button-text-color-primary-active: var(--planus-pdf-accent-text) !important;
+      --button-hover-color: color-mix(in srgb, currentColor 14%, transparent) !important;
+      --button-background-color-hover: color-mix(in srgb, currentColor 14%, transparent) !important;
+      --button-background-color-active: color-mix(in srgb, currentColor 27%, transparent) !important;
+      --button-background-color-toolbar-hover: var(--button-background-color-hover) !important;
+      --button-background-color-toolbar-active: var(--button-background-color-active) !important;
+      --toggled-btn-bg-color: color-mix(in srgb, currentColor 18%, transparent) !important;
+      --toggled-hover-active-btn-color: var(--button-background-color-active) !important;
+      --toggled-btn-color: var(--main-color) !important;
+      --toggled-btn-text-color: var(--main-color) !important;
+      --dropdown-btn-bg-color: color-mix(in srgb, currentColor 6%, transparent) !important;
+      --doorhanger-bg-color: light-dark(#ffffff, #28282b) !important;
+
+      /* The page-management sidebar defines these on its own container. */
+      #viewsManager {
+        --indicator-color: var(--planus-pdf-accent) !important;
+        --button-focus-outline-color: var(--planus-pdf-accent) !important;
+        --image-border-width: 1px !important;
+        --image-current-border-color: var(--planus-pdf-accent) !important;
+        --image-current-shadow: 0 0 0 1px var(--planus-pdf-accent) !important;
+        --image-current-page-number-bg: var(--planus-pdf-accent) !important;
+        --image-current-page-number-fg: var(--planus-pdf-accent-text) !important;
+        --image-current-hover-page-number-bg: var(--planus-pdf-accent-hover) !important;
+        --image-current-hover-page-number-fg: var(--planus-pdf-accent-text) !important;
+      }
+
+      .toolbarButton.toggled {
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 22%, transparent) !important;
+      }
+
+      .toolbarButton.toggled:hover {
+        background-color: color-mix(in srgb, currentColor 22%, transparent) !important;
+      }
+
+      .toolbarButton:not(:disabled):active {
+        background-color: var(--button-background-color-active) !important;
+      }
+    }
+  }
+}
+
+/* Frequently used built-in pages share Planus's UI font and corner sizes. */
+@-moz-document url-prefix("about:preferences"), url-prefix("about:addons"), url-prefix("about:downloads") {
+  :root {
+    --button-border-radius: 4px !important;
+    --panel-border-radius: 6px !important;
+    --panel-menuitem-border-radius: 4px !important;
+    --border-radius-small: 4px !important;
+    --border-radius-medium: 4px !important;
+    --border-radius-large: 6px !important;
+  }
+
+  :root, body, button, input, select, textarea, menulist {
+    font-family: Inter, sans-serif !important;
+  }
+
+  @media not (forced-colors) {
+    :root {
+      --button-background-color-ghost-hover: color-mix(in srgb, currentColor 14%, transparent) !important;
+      --button-background-color-ghost-active: color-mix(in srgb, currentColor 27%, transparent) !important;
+    }
+  }
+}
+
+/* Reader View controls only; retain the article's chosen fonts and layout. */
+@-moz-document url-prefix("about:reader") {
+  .toolbar,
+  .dropdown-popup {
+    border-radius: 6px !important;
+  }
+
+  .toolbar,
+  .dropdown-popup,
+  .reader-controls button,
+  .reader-controls select,
+  .hover-label {
+    font-family: Inter, sans-serif !important;
+  }
+
+  .toolbar-button,
+  .reader-controls button,
+  .reader-controls select,
+  .hover-label {
+    border-radius: 4px !important;
+  }
+
+  @media not (forced-colors) {
+    .toolbar {
+      --toolbar-button-background-hover: color-mix(in srgb, currentColor 14%, transparent) !important;
+      --toolbar-button-background-active: color-mix(in srgb, currentColor 27%, transparent) !important;
+    }
+  }
+}
