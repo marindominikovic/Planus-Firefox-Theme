@@ -128,6 +128,24 @@ menuitem,
   border-radius: var(--flat-control-radius) !important;
 }
 
+/* Find-in-page and download actions use pill/circle radii in Nova instead of
+   the shared small-control radius. Keep their native sizing and feedback. */
+.findbar-textbox,
+.findbar-find-previous,
+.findbar-find-next,
+.close-icon.findbar-closebutton,
+#downloadsPanel .downloadButton {
+  border-radius: var(--flat-control-radius) !important;
+}
+
+/* Match bookmark editing and site-permission prompt buttons to other controls.
+   Local tokens also reach their native shadow-DOM buttons and folder picker. */
+#editBookmarkPanel,
+#notification-popup {
+  --button-border-radius: var(--flat-control-radius) !important;
+  --select-border-radius: var(--flat-control-radius) !important;
+}
+
 menupopup,
 panel {
   --panel-border-radius: var(--flat-panel-radius) !important;
@@ -140,6 +158,53 @@ panelview .subviewbutton,
 panelview .toolbarbutton-1,
 .widget-overflow-list .toolbarbutton-1 {
   border-radius: var(--flat-control-radius) !important;
+}
+
+/* History (Ctrl+H) and Tabs from other devices are separate sidebar documents.
+   Target their shadow-tree hosts directly; keep native spacing and focus rings. */
+@-moz-document url("chrome://browser/content/sidebar/sidebar-history.html"),
+               url("chrome://browser/content/sidebar/sidebar-syncedtabs.html") {
+  :root,
+  panel-list {
+    font-family: Inter, sans-serif !important;
+  }
+
+  moz-input-search {
+    --input-search-border-radius: var(--flat-control-radius) !important;
+  }
+
+  moz-button {
+    --button-border-radius: var(--flat-control-radius) !important;
+  }
+
+  moz-card {
+    --card-border-radius: var(--flat-panel-radius) !important;
+    --card-border-radius-compact: var(--flat-control-radius) !important;
+  }
+
+  panel-list {
+    --panel-list-border-radius: var(--flat-panel-radius) !important;
+  }
+
+  panel-item {
+    --panel-item-button-border-radius: var(--flat-control-radius) !important;
+  }
+
+  sidebar-tab-row {
+    border-radius: var(--flat-control-radius) !important;
+  }
+
+  @media not (forced-colors) {
+    moz-card {
+      --card-header-background-color-hover: var(--flat-hover-background) !important;
+      --card-header-background-color-active: var(--flat-active-background) !important;
+    }
+
+    sidebar-tab-row[selected] {
+      background-color: var(--flat-active-background) !important;
+      color: inherit !important;
+    }
+  }
 }
 
 /* Shared feedback for toolbar/bookmark buttons, sidebar launcher buttons and
